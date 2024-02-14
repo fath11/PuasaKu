@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
         events: [
             ...getCurrentFastingProgress()
         ],
-        themeSystem: 'bootstrap'
+        themeSystem: 'bootstrap',
+        datesSet: function() { // Use 'datesRender' if you're using FullCalendar v4
+            updateTodaysButton();
+        }
     });
     calendar.render();
 });
@@ -41,4 +44,21 @@ function getCurrentFastingProgress() {
     }
 
     return events;
+}
+
+window.addEventListener('resize', function(event) {
+    updateTodaysButton();
+});
+
+function updateTodaysButton() {
+    let todayButton = document.getElementsByClassName("fc-today-button fc-button fc-button-primary")[0];
+    todayButton.innerHTML = '';
+    todayButton.innerText = '';
+    if (todayButton) {
+        if (window.innerWidth <= 600) {
+            todayButton.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            todayButton.innerHTML = "today";
+        }
+    }
 }
