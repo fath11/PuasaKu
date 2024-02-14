@@ -1,0 +1,46 @@
+:root {
+    --fc-small-font-size: .85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: hsla(0,0%,82%,.3);
+    --fc-neutral-text-color: grey;
+    --fc-border-color: #ddd;
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: #3184fd;
+    --fc-button-border-color: #2c3e50;
+    --fc-button-hover-bg-color: #0d6efd;
+    --fc-button-hover-border-color: #1a252f;
+    --fc-button-active-bg-color: #0d6efd;
+    --fc-button-active-border-color: #0d6efd;
+    --fc-event-bg-color: #3184fd;
+    --fc-event-border-color: #0d6efd;
+    --fc-event-text-color: #fff;
+    --fc-event-selected-overlay-color: rgba(0,0,0,.25);
+    --fc-more-link-bg-color: #d0d0d0;
+    --fc-more-link-text-color: inherit;
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+    --fc-non-business-color: hsla(0,0%,84%,.3);
+    --fc-bg-event-color: #8fdf82;
+    --fc-bg-event-opacity: 0.3;
+    --fc-highlight-color: rgba(188,232,241,.3);
+    --fc-today-bg-color: rgba(255,220,40,.15);
+    --fc-now-indicator-color: red;
+}
+
+#calendar {
+    margin: 30px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+    .fc-event-title {
+       display: none;
+    }
+}
+
+.fc-event-title {
+    color: pink;
+}

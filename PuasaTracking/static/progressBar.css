@@ -1,0 +1,35 @@
+#todaysProgress {
+    height: 200px; 
+    overflow: hidden;
+    margin: 30px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    border: none;
+    position: relative;
+}
+
+.card-img {
+    position: absolute; 
+    bottom: -200px; 
+    left: 0;
+}
+
+@media screen and (max-width: 680px) {
+    .card-img {
+        bottom: 0;
+    }
+}
+
+.card-img-overlay {
+    position: absolute; 
+    bottom: 0; 
+    width: 100%;
+}
+
+.progress {
+    height: 20px; 
+    position: sticky; 
+    top: 90%;
+    width: 100%;
+}
