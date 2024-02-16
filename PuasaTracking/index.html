@@ -30,7 +30,7 @@
             <div class="card-img-overlay">
                 <h1 class="card-title">Today's progress</h1>
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="PuasaProgressCard" role="progressbar" style="width: 75%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -40,6 +40,23 @@
     <script type="module" src="/PuasaTracking/static/calenderManagement.js"></script>
 
     <div id='calendar'></div>
+
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Event</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Set this day as...</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="finished-btn" class="btn btn-success" data-bs-dismiss="modal">Finished</button>
+                    <button id="todo-btn" class="btn btn-primary" data-bs-dismiss="modal">ToDo</button>
+                </div>
+            </div>
+        </div>
+    </div>    
 
 </body>
 </html>

@@ -15,18 +15,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     calendar.addEventSource(events);
                 });
         },
+        eventClick: function(info) {
+            var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+            document.getElementById('eventModalLabel').textContent = info.event.title;
+            eventModal.show();
+        }
     });
     calendar.render();
 });
 
+document.getElementById('finished-btn').addEventListener('click', function() {
+    alert('Finished button clicked!');
+});
+
+document.getElementById('todo-btn').addEventListener('click', function() {
+    alert('ToDo button clicked!');
+});
+
+
 async function getCurrentFastingProgress(year, month) {
-    console.log(`${month} and ${year}`)
     let response = await fetch(`https://api.aladhan.com/v1/gToHCalendar/${month}/${year}`);
     let data = await response.json();
 
     // Filter the data to get the dates for Ramadan
     let ramadanDates = data.data.filter(item => item.hijri.month.number == 9);
-    console.log(ramadanDates)
 
     // Initialize the events array
     let events = [];
@@ -37,12 +49,12 @@ async function getCurrentFastingProgress(year, month) {
         let ramadanToGregorian = ramadanDates[i].gregorian.date;
         let parts = ramadanToGregorian.split('-');
         let FullCalendarSupportableDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`)
-
+        FullCalendarSupportableDate = FullCalendarSupportableDate.toISOString().split("T")[0]
 
         // Create an event object
         let event = {
             "title": 'Day ' + (i + 1),
-            "start": FullCalendarSupportableDate.toISOString().split("T")[0],
+            "start": FullCalendarSupportableDate,
             "display": 'background',
             "color": 'red',
             "textColor": 'black',
