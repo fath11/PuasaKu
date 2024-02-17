@@ -1,3 +1,17 @@
+// Initialize Dexie
+var db = new Dexie('UsersProgress');
+var progress = {};
+
+// Define your database schema
+db.version(1).stores({
+    users: 'username'
+});
+
+// Open the database
+db.open().catch(function(error) {
+    console.error('Uh oh : ' + error);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -14,6 +28,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     calendar.removeAllEventSources();
                     calendar.addEventSource(events);
                 });
+
+            // Initialize the progress for the current year if not already done
+            db.users.get('testGuy').then(function(user) {
+                if (user) {
+                    progress = user.progress;
+                } else {
+                    progress = {};
+                    progress[start.getFullYear()] = {Finished: [], ToDo: []};
+                    db.users.put({username: 'testGuy', progress: progress});
+                }
+            });
         },
         eventClick: function(info) {
             var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
@@ -22,16 +47,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     calendar.render();
-});
 
-document.getElementById('finished-btn').addEventListener('click', function() {
-    alert('Finished button clicked!');
-});
+    document.getElementById('finished-btn').addEventListener('click', function() {
+        // Get the current view's date range
+        var start = calendar.view.currentStart;
 
-document.getElementById('todo-btn').addEventListener('click', function() {
-    alert('ToDo button clicked!');
-});
+        // Add the current day to the Finished list
+        progress[start.getFullYear()].Finished.push(start.getDate());
 
+        // Save the updated progress
+        db.users.update('testGuy', {progress: progress});
+
+        alert('Finished button clicked!');
+    });
+
+    document.getElementById('todo-btn').addEventListener('click', function() {
+        // Get the current view's date range
+        var start = calendar.view.currentStart;
+
+        // Add the current day to the ToDo list
+        progress[start.getFullYear()].ToDo.push(start.getDate());
+
+        // Save the updated progress
+        db.users.update('testGuy', {progress: progress});
+
+        alert('ToDo button clicked!');
+    });
+});
 
 async function getCurrentFastingProgress(year, month) {
     let response = await fetch(`https://api.aladhan.com/v1/gToHCalendar/${month}/${year}`);
