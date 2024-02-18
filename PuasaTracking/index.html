@@ -21,12 +21,18 @@
     <script src="https://kit.fontawesome.com/1849f4e0f8.js" crossorigin="anonymous"></script>
 
     <link href="/PuasaTracking/static/css/spinner.css" rel="stylesheet">
+
+    <link href="/PuasaTracking/static/css/customCalender.css" rel="stylesheet">
+    <script type="module" src="/PuasaTracking/static/js/calenderManagement.js"></script>
+
+    <link href="/PuasaTracking/static/css/ToDoList.css" rel="stylesheet">
+    <script type="module" src="/PuasaTracking/static/js/ToDoList.js"></script>
+    
+    <link href="/PuasaTracking/static/css/progressBar.css" rel="stylesheet">
+    <script src="/PuasaTracking/static/js/progressManagement.js"></script>
 </head>
 <body>
     <span style="padding: 50px;">
-
-        <link href="/PuasaTracking/static/css/progressBar.css" rel="stylesheet">
-        <script src="/PuasaTracking/static/js/progressManagement.js"></script>
 
         <div class="card bg-dark text-white text-center" id="todaysProgress">
             <img src="/PuasaTracking/static/img/Beach.jpg" class="card-img" alt="Picture of a beach">
@@ -37,18 +43,24 @@
                 </div>
             </div>
         </div>
-    </span>    
 
-    <link href="/PuasaTracking/static/css/customCalender.css" rel="stylesheet">
-    <script type="module" src="/PuasaTracking/static/js/calenderManagement.js"></script>
+        <div class="card bg-white text-dark text-center" id="toDoList">
+            <div class="card-body">
+                <h1 class="card-title">ToDo</h1>
+                <ul class="list-group list-group-numbered">
+
+                </ul>
+            </div>
+        </div>
+    </span>
 
     <div id='calendar'></div>
 
-    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal fade" id="eventSpecifier" tabindex="-1" aria-labelledby="eventSpecifierLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">Event</h5>
+                    <h5 class="modal-title" id="eventSpecifierLabel">Event</h5>
                 </div>
                 <div class="modal-body">
                     <p>Set this day as...</p>
@@ -59,7 +71,24 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
+
+    <div class="modal fade" id="todoSpecifier" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="todoSpecifierLabel">Event</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Set this day as...</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="set-pending-btn" class="btn btn-success" data-bs-dismiss="modal">Pending</button>
+                    <button id="remove-pending-btn" class="btn btn-error" data-bs-dismiss="modal">Remove from pending</button>
+                </div>
+            </div>
+        </div>
+    </div> 
 
 </body>
 </html>

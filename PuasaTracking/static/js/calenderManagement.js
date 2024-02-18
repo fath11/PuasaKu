@@ -1,4 +1,5 @@
 import { Spinner } from './spinner.js';
+import { generateListItems } from './ToDoList.js';
 
 // Initialize Dexie
 var db = new Dexie('UsersProgress');
@@ -45,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         eventClick: function(info) {
             calendarInfo = info;
-            var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-            document.getElementById('eventModalLabel').textContent = info.event.title;
+            var eventModal = new bootstrap.Modal(document.getElementById('eventSpecifier'));
+            document.getElementById('eventSpecifierLabel').textContent = info.event.title;
             eventModal.show();
         }
     });
@@ -57,7 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
         progress[start.getFullYear()].Finished.push(title);
     
         db.users.update('testGuy', {progress: progress}).then(() => {
-            calendar.refetchEvents();
+            calendar.destroy()
+            calendar.render()
+            generateListItems(progress)//From ToDo list
         });
     });
     
@@ -68,7 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
         progress[start.getFullYear()].ToDo.push(title);
     
         db.users.update('testGuy', {progress: progress}).then(() => {
-            calendar.refetchEvents();
+            calendar.destroy()
+            calendar.render()
+            generateListItems(progress)//From ToDo list
         });
     });    
 
