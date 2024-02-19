@@ -11,7 +11,8 @@
 }
 
 #ramadanStatusImg {
-    max-height: 100vh;
+    height: auto;
+    min-height: 100%;
     overflow-y: hidden;
     position: absolute; 
     bottom: 0; 
@@ -19,7 +20,7 @@
 }
 
 .list-group {
-    max-height: 80%; /* Adjust this value as needed */
+    max-height: 80%;
     overflow-y: auto;
     position: relative;
     padding: 10px;
@@ -30,7 +31,6 @@
     color: white;
 }
 
-/* Customize the scrollbar */
 ::-webkit-scrollbar {
     width: 5px;
 }

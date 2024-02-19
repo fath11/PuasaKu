@@ -52,26 +52,38 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(Modal + 'Label').textContent = info.event.title;
             generateNote(info, eventModal, Modal)
             eventModal.show();
+            for (let year in progress) {
+                let finishedItems = progress[year].Finished;
+                if (finishedItems.some(item => item.Ramadan === calendarInfo.event.title)) {
+                    // Hide the button
+                    document.getElementById('finished-btn').style.display = 'none';
+                    break;
+                } else {
+                    document.getElementById('finished-btn').style.display = 'flex';
+                    break;
+                }
+            }
         }
     });
     document.getElementById('finished-btn').addEventListener('click', function() {
         let start = calendar.view.currentStart;
         let title = calendarInfo.event.title;
+
         checkProgressStored(start, title);
-    
+        
         // Get the current date
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-    
+        
         today = mm + '/' + dd + '/' + yyyy;
-    
+        
         // Get the note from the input field
         var note = document.querySelector('.input-group .form-control').value;
-    
-        progress[start.getFullYear()].Finished.push({Ramadan: title, finishedOn: today, note: note});
         
+        progress[start.getFullYear()].Finished.push({Ramadan: title, finishedOn: today, note: note});
+            
         db.users.update('testGuy', {progress: progress}).then(() => {
             calendar.destroy()
             calendar.render()
@@ -191,24 +203,23 @@ async function getFinishedEvents(start) {
     }
 
     let events = [];
-
-    for (let i = 0; i < finishedEvents.length; i++) {
-        let finishedOn = finishedEvents[i].finishedOn;
-        let parts = finishedOn.split('/');
-        let FullCalendarSupportableDate = new Date(`${parts[2]}-${parts[0]}-${parts[1]}`)
-        FullCalendarSupportableDate = FullCalendarSupportableDate.toISOString().split("T")[0]
-
-        let currentRamadan = finishedEvents[i].Ramadan
-
-        let event = {
-            "title": currentRamadan + ' ' + start.getFullYear() + " finished",
-            "start": FullCalendarSupportableDate,
-            "display": 'background',
-            "color": 'green',
-            "textColor": 'black',
-        };
-
-        events.push(event);
+    if (finishedEvents) {
+        for (let i = 0; i < finishedEvents.length; i++) {
+            let finishedOn = finishedEvents[i].finishedOn;
+            let parts = finishedOn.split('/');
+            let FullCalendarSupportableDate = new Date(`${parts[2]}-${parts[0]}-${parts[1]}`)
+            FullCalendarSupportableDate = FullCalendarSupportableDate.toISOString().split("T")[0]
+    
+            let currentRamadan = finishedEvents[i].Ramadan
+    
+            let event = {
+                "title": currentRamadan + ' ' + start.getFullYear() + " finished",
+                "start": FullCalendarSupportableDate,
+                "textColor": 'white',
+            };
+    
+            events.push(event);
+        }
     }
 
     return events;

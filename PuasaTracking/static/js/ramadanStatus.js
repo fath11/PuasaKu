@@ -64,8 +64,6 @@ function generateListItems(UserProgress) {
 
 document.getElementById('set-finished-btn').addEventListener('click', function(event) {
     if (selectedDay) { // Check if selectedDay has been set
-        console.log(selectedDay);
-
         // Get the current date
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -100,9 +98,56 @@ document.getElementById('set-finished-btn').addEventListener('click', function(e
     }
 });
 
-document.getElementById('remove-pinned-btn').addEventListener('click', function(event) {
-    console.log(selectedDay);
+document.getElementById('goto-pinned-ramadan-btn').addEventListener('click', async function() {
+    let title = selectedDay
+    console.log(title)
 
+    // Extract the day from the title
+    let parts = title.split(' ');
+    let day = parts[1];
+
+    let gregorianYear;
+
+    // Loop through Progress to find the matching year
+    for (let year in Progress) {
+        let pinItems = Progress[year].Pin;
+        for (let i = 0; i < pinItems.length; i++) {
+            let item = pinItems[i];
+            if (typeof item === 'string') {
+                item = { Ramadan: item };
+                pinItems[i] = item;
+            }
+            if (item.Ramadan === title) {
+                gregorianYear = year; // Set the gregorianYear
+                break;
+            }
+        }
+        if (gregorianYear) {
+            break;
+        }
+    }
+
+    let hijriYear = Math.floor((gregorianYear - 622) * (33 / 32));
+
+    // Construct the Hijri date string
+    let hijriDate = `${day}-09-${hijriYear}`;
+
+    // Make a request to the API
+    let response = await fetch(`https://api.aladhan.com/v1/hToG/${hijriDate}`);
+    let data = await response.json();
+
+    // Extract the Gregorian date from the API response
+    let gregorianDate = data.data.gregorian.date;
+
+    // Convert the Gregorian date string to a Date object
+    parts = gregorianDate.split('-');
+    let date = new Date(parts[2], parts[1] - 1, parts[0]);
+
+    // Navigate to the date
+    calendar.gotoDate(date);
+});
+
+document.getElementById('remove-pinned-btn').addEventListener('click', function(event) {
     // Remove the day from Progress
     for (let year in Progress) {
         let indexInFinished = Progress[year].Finished.findIndex(item => item.Ramadan === selectedDay);
@@ -125,7 +170,6 @@ document.getElementById('remove-pinned-btn').addEventListener('click', function(
 
 function generateNote(eventModal) {
     var noteInput;
-    console.log(selectedDay)
 
     // Loop through progress to find the matching object
     for (let year in Progress) {
@@ -154,6 +198,9 @@ function generateNote(eventModal) {
                     // Update the object to include "note"
                     item.note = noteInput.value;
                     db.users.update('testGuy', {progress: Progress});
+
+                    calendar.destroy();
+                    calendar.render();
                 });
 
                 eventModal.show();
