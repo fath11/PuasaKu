@@ -22,31 +22,18 @@
 
     <link href="/PuasaTracking/static/css/spinner.css" rel="stylesheet">
 
-    <link href="/PuasaTracking/static/css/customCalender.css" rel="stylesheet">
-    <script type="module" src="/PuasaTracking/static/js/calenderManagement.js"></script>
+    <link href="/PuasaTracking/static/css/customCalendar.css" rel="stylesheet">
+    <script type="module" src="/PuasaTracking/static/js/calendarManagement.js"></script>
 
-    <link href="/PuasaTracking/static/css/ToDoList.css" rel="stylesheet">
-    <script type="module" src="/PuasaTracking/static/js/ToDoList.js"></script>
-    
-    <link href="/PuasaTracking/static/css/progressBar.css" rel="stylesheet">
-    <script src="/PuasaTracking/static/js/progressManagement.js"></script>
+    <link href="/PuasaTracking/static/css/ramadanStatus.css" rel="stylesheet">
+    <script type="module" src="/PuasaTracking/static/js/ramadanStatus.js"></script>
 </head>
 <body>
     <span style="padding: 50px;">
-
-        <div class="card bg-dark text-white text-center" id="todaysProgress">
-            <img src="/PuasaTracking/static/img/Beach.jpg" class="card-img" alt="Picture of a beach">
+        <div class="card bg-dark text-white text-center" id="ramadanStatus">
+            <img src="/PuasaTracking/static/img/Beach.jpg" class="card-img" id="ramadanStatusImg" alt="Picture of a beach">
             <div class="card-img-overlay">
-                <h1 class="card-title">Today's progress</h1>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="PuasaProgressCard" role="progressbar" style="width: 75%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card bg-white text-dark text-center" id="toDoList">
-            <div class="card-body">
-                <h1 class="card-title">ToDo</h1>
+                <h1 class="card-title">User's status</h1>
                 <ul class="list-group list-group-numbered">
 
                 </ul>
@@ -61,34 +48,62 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="eventSpecifierLabel">Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Set this day as...</p>
-                </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="eventSpecifier-note">Note:</span>
+                        <input type="text" class="form-control" placeholder="will fast" aria-label="Note" aria-describedby="eventSpecifier-note">
+                    </div>
+                </div>                
                 <div class="modal-footer">
-                    <button id="finished-btn" class="btn btn-success" data-bs-dismiss="modal">Finished</button>
-                    <button id="todo-btn" class="btn btn-primary" data-bs-dismiss="modal">ToDo</button>
+                    <button id="finished-btn" class="btn btn-success" data-bs-dismiss="modal">Set as finished</button>
+                    <button id="pin-btn" class="btn btn-primary" data-bs-dismiss="modal">Pin</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="todoSpecifier" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal fade" id="todoSpecifier" tabindex="-1" aria-labelledby="todoSpecifierLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="todoSpecifierLabel">Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Set this day as...</p>
-                </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="todoSpecifier-note">Note:</span>
+                        <input type="text" class="form-control" placeholder="Period unfortunately" aria-label="Note" aria-describedby="todoSpecifier-note">
+                    </div>
+                </div>                
                 <div class="modal-footer">
-                    <button id="set-pending-btn" class="btn btn-success" data-bs-dismiss="modal">Pending</button>
-                    <button id="remove-pending-btn" class="btn btn-error" data-bs-dismiss="modal">Remove from pending</button>
+                    <button id="set-finished-btn" class="btn btn-success" data-bs-dismiss="modal">Set as finished</button>
+                    <button id="remove-pinned-btn" class="btn btn-failed" data-bs-dismiss="modal">Remove from pin</button>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
+
+    <div class="modal fade" id="finishedMarker" tabindex="-1" aria-labelledby="finishedMarkerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="finishedMarkerLabel">Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="finishedMarker-note">Note:</span>
+                        <input type="text" class="form-control" placeholder="Forgot to wake up lol" aria-label="Note" aria-describedby="finishedMarker-note">
+                    </div>
+                </div>                
+                <div class="modal-footer">
+                    <button id="goto-ramadan-btn" class="btn btn-error" data-bs-dismiss="modal">Go to this ramadan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

@@ -1,0 +1,50 @@
+#ramadanStatus {
+    height: 100vh;
+    max-height: 360px;
+    margin: 30px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+#ramadanStatusImg {
+    max-height: 100vh;
+    overflow-y: hidden;
+    position: absolute; 
+    bottom: 0; 
+    left: 0;
+}
+
+.list-group {
+    max-height: 80%; /* Adjust this value as needed */
+    overflow-y: auto;
+    position: relative;
+    padding: 10px;
+}
+
+.list-group .list-group-item {
+    background-color: transparent;
+    color: white;
+}
+
+/* Customize the scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+p::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d8d8d8;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c8c8c8;
+}
+
