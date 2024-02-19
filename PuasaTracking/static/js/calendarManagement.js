@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let hijriDate = `${day}-09-${hijriYear}`;
     
         // Make a request to the API
-        let response = await fetch(`http://api.aladhan.com/v1/hToG/${hijriDate}`);
+        let response = await fetch(`https://api.aladhan.com/v1/hToG/${hijriDate}`);
         let data = await response.json();
     
         // Extract the Gregorian date from the API response
