@@ -43,7 +43,7 @@ function generateListItems(UserProgress) {
         
             let badge = document.createElement('span');
             badge.className = 'badge bg-info rounded-pill';
-            badge.innerHTML = '<i class="fa-solid fa-eye"></i>'
+            badge.innerHTML = '<i class="fa-solid fa-pen"></i>'
             listItem.appendChild(badge);
             
             list.appendChild(listItem);
@@ -51,8 +51,8 @@ function generateListItems(UserProgress) {
             // Use a closure to capture the current value of 'i'
             (function(i) {
                 document.getElementById(listItem.id).addEventListener('click', function() {
-                    var eventModal = new bootstrap.Modal(document.getElementById('todoSpecifier'));
-                    document.getElementById('todoSpecifierLabel').textContent = pinItems[i].Ramadan;
+                    var eventModal = new bootstrap.Modal(document.getElementById('pinSpecifier'));
+                    document.getElementById('pinSpecifierLabel').textContent = pinItems[i].Ramadan;
                     selectedDay = pinItems[i].Ramadan; // Store the selected day
                     generateNote(eventModal)
                     eventModal.show();
@@ -80,7 +80,7 @@ document.getElementById('set-finished-btn').addEventListener('click', function(e
                 if (!Progress[year].Finished) {
                     Progress[year].Finished = [];
                 }
-                let note = document.querySelector('#todoSpecifier .form-control').value;
+                let note = document.querySelector('#pinSpecifier .form-control').value;
                 Progress[year].Finished.push({Ramadan: selectedDay, finishedOn: today, note: note});
                 let indexInPin = Progress[year].Pin.findIndex(item => item.Ramadan === selectedDay);
                 if (indexInPin !== -1) {
@@ -125,40 +125,41 @@ document.getElementById('remove-pinned-btn').addEventListener('click', function(
 
 function generateNote(eventModal) {
     var noteInput;
+    console.log(selectedDay)
 
     // Loop through progress to find the matching object
     for (let year in Progress) {
-        ['Finished', 'Pin'].forEach(arrayName => {
-            for (let i = 0; i < Progress[year][arrayName].length; i++) {
-                let item = Progress[year][arrayName][i];
-                // Ensure all items are objects
-                if (typeof item === 'string') {
-                    item = { Ramadan: item };
-                    Progress[year][arrayName][i] = item;
-                }
-                if (item.Ramadan === selectedDay) {
-                    noteInput = document.querySelector('#todoSpecifier .form-control');
-
-                    // Check if the object has a "note" key
-                    if (item.note) {
-                        // Edit the input to match the "note"
-                        noteInput.value = item.note;
-                    } else {
-                        noteInput.value = ""; // Clear the input field
-                    }
-
-                    // Add an input event listener to the noteInput
-                    noteInput.addEventListener('input', function() {
-                        // Update the object to include "note"
-                        item.note = noteInput.value;
-                        db.users.update('testGuy', {progress: Progress});
-                    });
-
-                    eventModal.show();
-                    return;
-                }
+        let pinItems = Progress[year].Pin;
+        for (let i = 0; i < pinItems.length; i++) {
+            let item = pinItems[i];
+            // Ensure all items are objects
+            if (typeof item === 'string') {
+                item = { Ramadan: item };
+                pinItems[i] = item;
             }
-        });
+            if (item.Ramadan === selectedDay) {
+                document.getElementById('pinSpecifierLabel').textContent = selectedDay;
+                noteInput = document.querySelector('#pinSpecifier .form-control');
+
+                // Check if the object has a "note" key
+                if (item.note) {
+                    // Edit the input to match the "note"
+                    noteInput.value = item.note;
+                } else {
+                    noteInput.value = ""; // Clear the input field
+                }
+
+                // Add an input event listener to the noteInput
+                noteInput.addEventListener('input', function() {
+                    // Update the object to include "note"
+                    item.note = noteInput.value;
+                    db.users.update('testGuy', {progress: Progress});
+                });
+
+                eventModal.show();
+                return;
+            }
+        }
     }
 }
 

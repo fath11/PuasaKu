@@ -186,7 +186,9 @@ function getDayState(Day, start) {
 
 async function getFinishedEvents(start) {
     let fullYear = progress[start.getFullYear()];
-    let finishedEvents = fullYear.Finished;
+    if (fullYear) {
+        var finishedEvents = fullYear.Finished;
+    }
 
     let events = [];
 
@@ -217,6 +219,7 @@ function generateNote(info, eventModal, eventKind) {
 
     var title = info.event.title.split(" ", 2)
     title = title[0] + " " + title[1]
+    console.log(title)
 
     // Loop through progress to find the matching object
     for (let year in progress) {
@@ -240,11 +243,14 @@ function generateNote(info, eventModal, eventKind) {
                         noteInput.value = ""; // Clear the input field
                     }
 
+                    noteInput = document.querySelector('#' + eventKind + ' .form-control');
+
                     // Add an input event listener to the noteInput
                     noteInput.addEventListener('input', function() {
                         // Update the object to include "note"
                         item.note = noteInput.value;
                         db.users.update('testGuy', {progress: progress});
+                        generateListItems(progress)//From Pin list
                     });
 
                     eventModal.show();
