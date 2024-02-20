@@ -6,6 +6,15 @@ $(function(){
     $("#NavWidget").load("/PuasaTracking/Navigations/NavWidget.html", function() {
         _init_();
         newUserHandler()
+        db.users.count().then(function(count) {
+            if (count === 0) {
+                // No users in the Users table, show the UsernameModal
+                var modal = bootstrap.Modal.getInstance(document.getElementById('usernameModal'));
+                modal.show();
+            }
+        }).catch(function(error) {
+            console.error('Error: ' + error);
+        });        
     }); 
 });
 
