@@ -17,6 +17,12 @@ db.open().catch(function(error) {
     console.error('Uh oh : ' + error);
 });
 
+db.users.orderBy('username').first().then(function(firstUser) {
+    sessionStorage.setItem('currentUser', firstUser.username);
+}).catch(function(error) {
+    console.error('Error: ' + error);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#statusNameDisplay').textContent = sessionStorage.getItem('currentUser') + "'s status";
     var calendarEl = document.getElementById('calendar');

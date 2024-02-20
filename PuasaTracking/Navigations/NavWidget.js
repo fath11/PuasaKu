@@ -17,11 +17,6 @@ db.open().catch(function(error) {
     console.error('Uh oh : ' + error);
 });
 var Users = db.users
-Users.orderBy('username').first().then(function(firstUser) {
-    sessionStorage.setItem('currentUser', firstUser.username);
-}).catch(function(error) {
-    console.error('Error: ' + error);
-});
 
 var alphaContext;
 var omegaContext;
