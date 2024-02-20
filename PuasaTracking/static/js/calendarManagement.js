@@ -18,6 +18,7 @@ db.open().catch(function(error) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#statusNameDisplay').textContent = sessionStorage.getItem('currentUser') + "'s status";
     var calendarEl = document.getElementById('calendar');
     var spinner = new Spinner().spin(calendarEl); // Spin the spinner on the calendarEl
     calendar = new FullCalendar.Calendar(calendarEl, {
@@ -35,13 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     spinner.stop(); // Stop the spinner
                 });
 
-            db.users.get('testGuy').then(function(user) {
+            db.users.get(sessionStorage.getItem('currentUser')).then(function(user) {
                 if (user) {
                     progress = user.progress;
                 } else {
                     progress = {};
                     progress[start.getFullYear()] = {Finished: [], Pin: []};
-                    db.users.put({username: 'testGuy', progress: progress});
+                    db.users.put({username: sessionStorage.getItem('currentUser'), progress: progress});
                 }
             });
         },
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         progress[start.getFullYear()].Finished.push({Ramadan: title, finishedOn: today, note: note});
             
-        db.users.update('testGuy', {progress: progress}).then(() => {
+        db.users.update(sessionStorage.getItem('currentUser'), {progress: progress}).then(() => {
             calendar.destroy()
             calendar.render()
             generateListItems(progress)//From Pin list
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var note = document.querySelector('.input-group .form-control').value;
         progress[start.getFullYear()].Pin.push({Ramadan: title, note: note});
         
-        db.users.update('testGuy', {progress: progress}).then(() => {
+        db.users.update(sessionStorage.getItem('currentUser'), {progress: progress}).then(() => {
             calendar.destroy()
             calendar.render()
             generateListItems(progress)//From Pin list
@@ -196,7 +197,7 @@ function getDayState(Day, start) {
     return 'red';
 }
 
-async function getFinishedEvents(start) {
+async function getFinishedEvents(start, retries = 5) {
     let fullYear = progress[start.getFullYear()];
     if (fullYear) {
         var finishedEvents = fullYear.Finished;
@@ -219,6 +220,14 @@ async function getFinishedEvents(start) {
             };
     
             events.push(event);
+        }
+    } else {
+        console.log("rerunning");
+        if (retries > 0) {
+            await new Promise(r => setTimeout(r, 1000)); // wait for 1 second before retrying
+            return getFinishedEvents(start, retries - 1);
+        } else {
+            throw new Error('Failed to get finished events after 5 retries');
         }
     }
 
@@ -260,7 +269,7 @@ function generateNote(info, eventModal, eventKind) {
                     noteInput.addEventListener('input', function() {
                         // Update the object to include "note"
                         item.note = noteInput.value;
-                        db.users.update('testGuy', {progress: progress});
+                        db.users.update(sessionStorage.getItem('currentUser'), {progress: progress});
                         generateListItems(progress)//From Pin list
                     });
 

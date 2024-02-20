@@ -12,7 +12,7 @@ db.open().catch(function(error) {
     console.error('Uh oh : ' + error);
 });
 
-db.users.get('testGuy').then(function(user) {
+db.users.get(sessionStorage.getItem('currentUser')).then(function(user) {
     if (user) {
         Progress = user.progress;
     }
@@ -87,7 +87,7 @@ document.getElementById('set-finished-btn').addEventListener('click', function(e
             }
         }
 
-        db.users.update('testGuy', {progress: Progress}) // Update 'pending' in the database
+        db.users.update(sessionStorage.getItem('currentUser'), {progress: Progress}) // Update 'pending' in the database
             .then(() => {
                 calendar.destroy()
                 calendar.render()
@@ -160,7 +160,7 @@ document.getElementById('remove-pinned-btn').addEventListener('click', function(
         }
     }
 
-    db.users.update('testGuy', {progress: Progress}) // Update 'pending' in the database
+    db.users.update(sessionStorage.getItem('currentUser'), {progress: Progress}) // Update 'pending' in the database
         .then(() => {
             calendar.destroy()
             calendar.render()
@@ -197,7 +197,7 @@ function generateNote(eventModal) {
                 noteInput.addEventListener('input', function() {
                     // Update the object to include "note"
                     item.note = noteInput.value;
-                    db.users.update('testGuy', {progress: Progress});
+                    db.users.update(sessionStorage.getItem('currentUser'), {progress: Progress});
 
                     calendar.destroy();
                     calendar.render();
