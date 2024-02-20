@@ -3,7 +3,7 @@ import { calendar } from "../static/js/calendarManagement.js";
 
 
 $(function(){
-    $("#NavWidget").load("./Navigations/NavWidget.html", function() {
+    $("#NavWidget").load("/PuasaTracking/Navigations/NavWidget.html", function() {
         _init_();
         newUserHandler()
     }); 
