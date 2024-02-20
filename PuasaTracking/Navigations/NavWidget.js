@@ -147,7 +147,7 @@ function newUserHandler(modal) {
         var username = document.getElementById('username').value;
 
         // Check if the username field is empty
-        if(username === '') {
+        if(username === '' || username === 'testGuy') {
             console.log('Please enter a username');
             return; // Exit the function if the username field is empty
         }
