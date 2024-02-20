@@ -18,7 +18,14 @@ db.open().catch(function(error) {
 });
 
 db.users.orderBy('username').first().then(function(firstUser) {
-    sessionStorage.setItem('currentUser', firstUser.username);
+    if (firstUser) {
+        // Only set currentUser if it's not already set
+        if (sessionStorage.getItem('currentUser') === null) {
+            sessionStorage.setItem('currentUser', firstUser.username);
+        }
+    } else {
+        console.log('No users in the database');
+    }
 }).catch(function(error) {
     console.error('Error: ' + error);
 });
