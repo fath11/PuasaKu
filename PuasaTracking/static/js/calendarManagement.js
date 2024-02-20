@@ -17,6 +17,24 @@ db.open().catch(function(error) {
     console.error('Uh oh : ' + error);
 });
 
+db.users.get('testGuy').then(function(user) {
+    if (user) {
+        // "testGuy" exists in the Users table, clear the database and set currentUser to null
+        db.delete().then(function() {
+            console.log('Database cleared');
+            sessionStorage.setItem('currentUser', null);
+            // Reload the page
+            location.reload();
+        }).catch(function(error) {
+            console.error('Error: ' + error);
+        });
+    } else {
+        console.log('"testGuy" not found in the database');
+    }
+}).catch(function(error) {
+    console.error('Error: ' + error);
+});
+
 db.users.orderBy('username').first().then(function(firstUser) {
     if (firstUser) {
         // Only set currentUser if it's not already set

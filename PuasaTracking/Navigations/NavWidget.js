@@ -5,11 +5,16 @@ import { calendar } from "../static/js/calendarManagement.js";
 $(function(){
     $("#NavWidget").load("/PuasaTracking/Navigations/NavWidget.html", function() {
         _init_();
-        newUserHandler()
+        let modal = new bootstrap.Modal((document.getElementById('usernameModal')))
+        newUserHandler(modal)
         db.users.count().then(function(count) {
             if (count === 0) {
-                // No users in the Users table, show the UsernameModal
-                var modal = bootstrap.Modal.getInstance(document.getElementById('usernameModal'));
+                usernameModal.setAttribute('data-bs-backdrop', 'static');
+                usernameModal.setAttribute('data-bs-keyboard', 'false');
+                var modal = new bootstrap.Modal(usernameModal);
+                let closeButton = document.querySelector('#usernameModal .btn-close');
+                closeButton.parentNode.removeChild(closeButton);
+
                 modal.show();
             }
         }).catch(function(error) {
@@ -123,10 +128,9 @@ function generateButtons() {
     });
 }
 
-function newUserHandler() {
+function newUserHandler(modal) {
     let button = document.querySelector('#newUser');
     let form = document.getElementById('usernameForm');
-    let modal = new bootstrap.Modal((document.getElementById('usernameModal')))
     let newUser
 
     // Add an event listener to the button
@@ -141,6 +145,12 @@ function newUserHandler() {
 
         // Get the username from the form
         var username = document.getElementById('username').value;
+
+        // Check if the username field is empty
+        if(username === '') {
+            console.log('Please enter a username');
+            return; // Exit the function if the username field is empty
+        }
 
         // Create a new progress object
         var progress = {};
