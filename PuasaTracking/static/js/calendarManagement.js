@@ -17,6 +17,19 @@ db.open().catch(function(error) {
     console.error('Uh oh : ' + error);
 });
 
+db.users.orderBy('username').first().then(function(firstUser) {
+    if (firstUser) {
+        // Only set currentUser if it's not already set
+        if (sessionStorage.getItem('currentUser') === null) {
+            sessionStorage.setItem('currentUser', firstUser.username);
+        }
+    } else {
+        console.log('No users in the database');
+    }
+}).catch(function(error) {
+    console.error('Error: ' + error);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#statusNameDisplay').textContent = sessionStorage.getItem('currentUser') + "'s status";
     var calendarEl = document.getElementById('calendar');
